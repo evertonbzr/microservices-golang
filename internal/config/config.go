@@ -32,7 +32,7 @@ func Load(env string) {
 
 	ENV = viper.GetString("ENV")
 	PORT = viper.GetString("PORT")
-	POSTGRES_URL = viper.GetString("POSTGRES_HOST")
+	POSTGRES_URL = viper.GetString("POSTGRES_URL")
 	REDIS_URL = viper.GetString("REDIS_URL")
 }
 

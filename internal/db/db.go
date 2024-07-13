@@ -10,6 +10,7 @@ import (
 
 func InitDB(uri string) *gorm.DB {
 	db, err := gorm.Open(postgres.Open(uri), &gorm.Config{})
+
 	if err != nil {
 		log.Fatal("Error connecting to database", "error", err)
 	}
