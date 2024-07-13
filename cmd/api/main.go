@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/evertonbzr/microservices-golang/internal/cache"
 	"github.com/evertonbzr/microservices-golang/internal/config"
 	"github.com/evertonbzr/microservices-golang/internal/db"
 )
@@ -14,6 +15,9 @@ func main() {
 	slog.Info("Starting API...", "port", config.PORT, "env", config.ENV)
 
 	db := db.InitDB(config.POSTGRES_URL)
-	slog.Info("Database connected", "url", config.POSTGRES_URL)
+	slog.Info("Database connected", "env", config.ENV)
+
+	cache := cache.InitRedis(config.REDIS_URL)
+	slog.Info("Redis connected", "env", config.ENV)
 
 }
