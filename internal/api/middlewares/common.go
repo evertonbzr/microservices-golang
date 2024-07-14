@@ -1,13 +1,14 @@
-package middlewares
+package middleware
 
 import (
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+	m "github.com/go-chi/chi/v5/middleware"
 )
 
 func CommonMiddleware(r *chi.Mux) {
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger) // <--<< Logger should come before Recoverer
-	r.Use(middleware.Recoverer)
+	r.Use(m.RequestID)
+	r.Use(m.RealIP)
+	r.Use(m.Heartbeat("/healthz"))
+	r.Use(m.Logger) // <--<< Logger should come before Recoverer
+	r.Use(m.Recoverer)
 }

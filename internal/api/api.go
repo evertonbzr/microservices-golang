@@ -10,9 +10,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/evertonbzr/microservices-golang/internal/api/middlewares"
+	"github.com/evertonbzr/microservices-golang/internal/api/handler"
+	middleware "github.com/evertonbzr/microservices-golang/internal/api/middlewares"
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
@@ -26,8 +26,13 @@ type APIConfig struct {
 func Start(cfg *APIConfig) {
 	r := chi.NewRouter()
 
-	middlewares.CommonMiddleware(r)
-	r.Use(middleware.Heartbeat("/healthz"))
+	middleware.CommonMiddleware(r)
+
+	userHandler := handler.NewUserHandler(cfg.DB, cfg.Cache)
+
+	r.Route("/users", func(r chi.Router) {
+		r.Get("/", userHandler.ListUsers())
+	})
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Port),
