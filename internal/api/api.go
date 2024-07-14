@@ -12,6 +12,7 @@ import (
 
 	"github.com/evertonbzr/microservices-golang/internal/api/middlewares"
 	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
@@ -28,6 +29,8 @@ func Start(cfg *APIConfig) {
 	middlewares.CommonMiddleware(r)
 
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println(middleware.GetReqID(r.Context()))
+
 		w.Write([]byte("welcome"))
 	})
 
