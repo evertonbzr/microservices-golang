@@ -27,12 +27,7 @@ func Start(cfg *APIConfig) {
 	r := chi.NewRouter()
 
 	middlewares.CommonMiddleware(r)
-
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println(middleware.GetReqID(r.Context()))
-
-		w.Write([]byte("welcome"))
-	})
+	r.Use(middleware.Heartbeat("/healthz"))
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", cfg.Port),
@@ -45,13 +40,8 @@ func Start(cfg *APIConfig) {
 		}
 	}()
 
-	// Wait for interrupt signal to gracefully shutdown the server with
-
 	quit := make(chan os.Signal, 1)
 
-	// kill (no param) default send syscall.SIGTERM
-	// kill -2 is syscall.SIGINT
-	// kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	log.Println("Shutdown Server ...")
@@ -61,7 +51,7 @@ func Start(cfg *APIConfig) {
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatal("Server Shutdown:", err)
 	}
-	// catching ctx.Done(). timeout of 5 seconds.
+
 	select {
 	case <-ctx.Done():
 		log.Println("timeout of 5 seconds.")

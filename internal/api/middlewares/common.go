@@ -8,7 +8,6 @@ import (
 func CommonMiddleware(r *chi.Mux) {
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
-	r.Use(middleware.Heartbeat("/healthz"))
 	r.Use(middleware.Logger) // <--<< Logger should come before Recoverer
 	r.Use(middleware.Recoverer)
 }
