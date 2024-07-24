@@ -5,7 +5,6 @@ import (
 	"net/http"
 )
 
-// respondWithJSON serializa a resposta em JSON e define os headers apropriados.
 func RespondWithJSON(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(statusCode)

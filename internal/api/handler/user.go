@@ -31,3 +31,9 @@ func (h *UserHandler) ListUsers() http.HandlerFunc {
 		utils.RespondWithJSON(w, http.StatusOK, users)
 	}
 }
+
+func (h *UserHandler) Ping() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		utils.RespondWithJSON(w, http.StatusOK, map[string]string{"message": "pong"})
+	}
+}
